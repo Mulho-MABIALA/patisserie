@@ -125,6 +125,10 @@ $current_statut_index = array_search($current_statut, $statut_order);
                     <i class="fas fa-dashboard mr-3"></i>
                     <span class="font-medium">Tableau de bord</span>
                 </a>
+                <a href="gestion_clients.php" class="flex items-center px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">
+                    <i class="fas fa-users mr-3"></i>
+                    <span class="font-medium">Clients</span>
+                </a>
                 <a href="produits.php" class="flex items-center px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">
                     <i class="fas fa-gem mr-3"></i>
                     <span class="font-medium">Produits</span>

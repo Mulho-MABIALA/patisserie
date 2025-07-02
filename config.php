@@ -2,10 +2,10 @@
 session_start();
 
 // Configuration de la base de données
-define('DB_HOST', 'mysql.hostinger.com');
-define('DB_NAME', 'u451994146_bijouterie');
-define('DB_USER', 'u451994146_bijouterie');
-define('DB_PASS', 'Daoudacherif4321');
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'bijoux');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 
 // Connexion à la base de données
 try {

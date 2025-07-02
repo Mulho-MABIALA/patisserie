@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <i class="fas fa-gem text-accent text-3xl"></i>
             </div>
             <h1 class="text-3xl font-bold text-white">Administration</h1>
-            <p class="text-primary mt-2">Bijouterie Élégance</p>
+            <p class="text-primary mt-2">FM_Cakes</p>
         </div>
         
         <!-- Login Form -->

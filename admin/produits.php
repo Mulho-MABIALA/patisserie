@@ -84,6 +84,11 @@ $stock_faible = count(array_filter($produits, function($p) { return $p['stock'] 
                     <i class="fas fa-dashboard mr-3"></i>
                     <span class="font-medium">Tableau de bord</span>
                 </a>
+                <a href="gestion_clients.php" class="flex items
+                    px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">
+                    <i class="fas fa-users mr-3"></i>
+                    <span class="font-medium">Clients</span>
+                </a>
                 <a href="produits.php" class="flex items-center px-4 py-3 bg-secondary text-white rounded-lg">
                     <i class="fas fa-gem mr-3"></i>
                     <span class="font-medium">Produits</span>
@@ -91,6 +96,10 @@ $stock_faible = count(array_filter($produits, function($p) { return $p['stock'] 
                 <a href="commandes.php" class="flex items-center px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">
                     <i class="fas fa-shopping-cart mr-3"></i>
                     <span class="font-medium">Commandes</span>
+                </a>
+                <a href="rapport.php" class="flex items-center px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    <span class="font-medium">Rapports</span>
                 </a>
                 <hr class="my-4 border-gray-700">
                 <a href="../index.php" target="_blank" class="flex items-center px-4 py-3 text-gray-300 hover:bg-secondary hover:text-white rounded-lg transition duration-200">

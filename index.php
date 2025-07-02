@@ -1,17 +1,13 @@
 <?php
 require_once 'config.php';
-
 // Récupérer tous les produits disponibles
 $stmt = $pdo->query("SELECT * FROM produits WHERE stock > 0 ORDER BY created_at DESC");
 $produits_disponibles = $stmt->fetchAll();
-
 // Récupérer tous les produits (y compris rupture de stock)
 $stmt = $pdo->query("SELECT * FROM produits ORDER BY created_at DESC");
 $tous_produits = $stmt->fetchAll();
-
 // Utiliser tous les produits pour l'affichage
 $produits = $tous_produits;
-
 // Compter les articles dans le panier
 $nb_articles_panier = 0;
 if(isset($_SESSION['panier'])) {
@@ -23,202 +19,304 @@ if(isset($_SESSION['panier'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les créations de Nahed - Bijouterie Artisanale</title>
+    <title>FM-Cakes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <?php echo getTailwindConfig(); ?>
     <style>
-        /* Animation personnalisée pour le hero */
+        /* Animations personnalisées */
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
+
+        @keyframes bounce-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
         .floating {
-            animation: float 6s ease-in-out infinite;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .bounce-gentle {
+            animation: bounce-gentle 2s ease-in-out infinite;
+        }
+
+        .wiggle:hover {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        /* Dégradés personnalisés pour pâtisserie */
+        .bg-pastry-gradient {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 25%, #FFB3BA 50%, #FFCCCB 75%, #FFF0F0 100%);
+        }
+
+        .bg-cream-gradient {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFFACD 50%, #FFEFD5 100%);
+        }
+
+        .bg-chocolate-gradient {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+        }
+
+        /* Couleurs personnalisées */
+        :root {
+            --pastry-pink: #FF6B6B;
+            --pastry-cream: #FFF8DC;
+            --pastry-chocolate: #8B4513;
+            --pastry-gold: #FFD700;
+            --pastry-mint: #98FB98;
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-b from-pink-50 to-orange-50">
     <!-- Navigation -->
-    <nav class="bg-dark shadow-lg sticky top-0 z-50">
+    <nav class="bg-white shadow-xl sticky top-0 z-50 border-b-4 border-pink-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <i class="fas fa-gem text-accent text-2xl mr-3 floating"></i>
-                    <h1 class="text-xl sm:text-2xl font-bold text-white">Les créations de Nahed</h1>
+                    <img src="images/FM_Cakes.png" alt="Logo" class="h-10 mr-3">
+                    <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
+                        FM_Cakes
+                    </h1>
                 </div>
-                
+
                 <!-- Menu Mobile Toggle -->
                 <div class="md:hidden">
-                    <button id="mobile-menu-toggle" class="text-white hover:text-primary focus:outline-none">
+                    <button id="mobile-menu-toggle" class="text-pink-600 hover:text-pink-800 focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
-                
+
                 <!-- Menu Desktop -->
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.php" class="text-white hover:text-primary transition duration-300">
+                    <a href="index.php" class="text-gray-700 hover:text-pink-600 transition duration-300 font-medium">
                         <i class="fas fa-home mr-2"></i>Accueil
                     </a>
-                    <a href="panier.php" class="text-white hover:text-primary transition duration-300 relative">
+                     <a href="Apropos.php" class="text-gray-700 hover:text-pink-600 transition duration-300 font-medium">
+                        <i class=""></i>A propos
+                    </a>
+                    <a href="Catalogue.php" class="text-gray-700 hover:text-pink-600 transition duration-300 font-medium">
+                        <i class=""></i>Catalogue
+                    </a>
+                    <a href="panier.php" class="text-gray-700 hover:text-pink-600 transition duration-300 font-medium relative">
                         <i class="fas fa-shopping-cart mr-2"></i>Panier
                         <?php if($nb_articles_panier > 0): ?>
-                        <span class="absolute -top-2 -right-2 bg-danger text-white text-xs rounded-full h-6 w-6 flex items-center justify-center animate-pulse">
+                        <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center animate-pulse">
                             <?php echo $nb_articles_panier; ?>
                         </span>
                         <?php endif; ?>
                     </a>
-                    <a href="admin/login.php" class="bg-secondary hover:bg-primary text-white px-4 py-2 rounded-lg transition duration-300">
-                        <i class="fas fa-user-shield mr-2"></i>Admin
+
+                    <a href="connexion.php" class="bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white px-6 py-2 rounded-full transition duration-300 font-medium shadow-lg">
+                        <i class="fas fa-user-shield mr-2"></i>Connexion 
                     </a>
                 </div>
             </div>
-            
+
             <!-- Menu Mobile -->
             <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="index.php" class="block text-white hover:text-primary py-2">
+                <a href="index.php" class="block text-gray-700 hover:text-pink-600 py-2 font-medium">
                     <i class="fas fa-home mr-2"></i>Accueil
                 </a>
-                <a href="panier.php" class="block text-white hover:text-primary py-2">
+                <a href="panier.php" class="block text-gray-700 hover:text-pink-600 py-2 font-medium">
                     <i class="fas fa-shopping-cart mr-2"></i>Panier (<?php echo $nb_articles_panier; ?>)
                 </a>
-                <a href="admin/login.php" class="block text-white hover:text-primary py-2">
+                <a href="admin/login.php" class="block text-gray-700 hover:text-pink-600 py-2 font-medium">
                     <i class="fas fa-user-shield mr-2"></i>Admin
                 </a>
             </div>
         </div>
     </nav>
-    
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-secondary to-primary py-20 relative overflow-hidden">
-        <!-- Motif décoratif -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-10 left-10 w-72 h-72 bg-white rounded-full filter blur-3xl"></div>
-            <div class="absolute bottom-10 right-10 w-96 h-96 bg-accent rounded-full filter blur-3xl"></div>
+
+    <!-- Carrousel -->
+    <div class="relative w-full max-w-7xl mx-auto my-8">
+        <div class="overflow-hidden rounded-lg">
+            <div class="flex transition-transform duration-500 ease-in-out" id="carousel">
+                <!-- Slide 1 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="images/image 1.jpg" alt="Slide 1" class="w-full">
+                </div>
+                <!-- Slide 2 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="images/image 1.jpg" alt="Slide 2" class="w-full">
+                </div>
+                <!-- Slide 3 -->
+                <div class="w-full flex-shrink-0">
+                    <img src="images/image 1.jpg" alt="Slide 3" class="w-full">
+                </div>
+            </div>
         </div>
-        
+        <!-- Boutons de navigation du carrousel -->
+        <button class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md" onclick="prevSlide()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md" onclick="nextSlide()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="bg-pastry-gradient py-20 relative overflow-hidden">
+        <!-- Éléments décoratifs -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full bounce-gentle"></div>
+            <div class="absolute top-20 right-20 w-24 h-24 bg-yellow-200 rounded-full floating"></div>
+            <div class="absolute bottom-20 left-20 w-40 h-40 bg-pink-200 rounded-full bounce-gentle"></div>
+            <div class="absolute bottom-10 right-10 w-28 h-28 bg-orange-200 rounded-full floating"></div>
+        </div>
+
+        <!-- Icônes de pâtisserie flottantes -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <i class="fas fa-cookie-bite absolute top-1/4 left-1/4 text-6xl text-white opacity-10 floating"></i>
+            <i class="fas fa-ice-cream absolute top-1/3 right-1/3 text-5xl text-white opacity-10 bounce-gentle"></i>
+            <i class="fas fa-candy-cane absolute bottom-1/4 left-1/3 text-4xl text-white opacity-10 floating"></i>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in">
-                Découvrez nos Bijoux d'Exception
+            <div class="mb-6">
+                <i class="fas fa-birthday-cake text-8xl text-white mb-4 wiggle"></i>
+            </div>
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+                Savourez la Douceur
             </h2>
-            <p class="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Des créations uniques faites main avec amour et passion pour sublimer votre élégance
+            <p class="text-xl sm:text-2xl text-white/95 mb-8 max-w-3xl mx-auto drop-shadow-md">
+                Des pâtisseries artisanales préparées avec amour pour éveiller vos sens
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#produits" class="bg-accent hover:bg-yellow-500 text-dark px-8 py-3 rounded-full font-semibold transition transform hover:scale-105 shadow-lg">
-                    <i class="fas fa-shopping-bag mr-2"></i>Voir la collection
+                <a href="#produits" class="bg-white hover:bg-gray-100 text-pink-600 px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105 shadow-xl">
+                    <i class="fas fa-cookie-bite mr-2"></i>Découvrir nos créations
                 </a>
-                <a href="#contact" class="bg-white hover:bg-gray-100 text-dark px-8 py-3 rounded-full font-semibold transition transform hover:scale-105 shadow-lg">
+                <a href="#contact" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105 shadow-xl">
                     <i class="fas fa-phone mr-2"></i>Nous contacter
                 </a>
             </div>
         </div>
     </section>
-    
+
     <!-- Stats Section -->
-    <section class="py-8 bg-white shadow-sm">
+    <section class="py-12 bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                    <h3 class="text-3xl font-bold text-primary"><?php echo count($produits); ?>+</h3>
-                    <p class="text-gray-600">Créations uniques</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="group">
+                    <div class="bg-pink-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-birthday-cake text-pink-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-pink-600"><?php echo count($produits); ?>+</h3>
+                    <p class="text-gray-600 font-medium">Délices sucrés</p>
                 </div>
-                <div>
-                    <h3 class="text-3xl font-bold text-secondary">100%</h3>
-                    <p class="text-gray-600">Fait main</p>
+                <div class="group">
+                    <div class="bg-orange-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-heart text-orange-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-orange-600">100%</h3>
+                    <p class="text-gray-600 font-medium">Fait maison</p>
                 </div>
-                <div>
-                    <h3 class="text-3xl font-bold text-accent">48h</h3>
-                    <p class="text-gray-600">Livraison</p>
+                <div class="group">
+                    <div class="bg-yellow-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-clock text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-yellow-600">2h</h3>
+                    <p class="text-gray-600 font-medium">Préparation</p>
                 </div>
-                <div>
-                    <h3 class="text-3xl font-bold text-danger">5★</h3>
-                    <p class="text-gray-600">Satisfaction</p>
+                <div class="group">
+                    <div class="bg-green-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                        <i class="fas fa-star text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-green-600">5★</h3>
+                    <p class="text-gray-600 font-medium">Qualité</p>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Produits -->
-    <section id="produits" class="py-16">
+    <section id="produits" class="py-16 bg-gradient-to-b from-pink-50 to-orange-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-dark mb-4">
-                    <i class="fas fa-star text-accent mr-2"></i>
-                    Nos Créations
-                    <i class="fas fa-star text-accent ml-2"></i>
-                </h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">
-                    Chaque bijou est une œuvre d'art unique, créée avec passion et savoir-faire
+                <div class="flex justify-center items-center mb-4">
+                    <i class="fas fa-cookie-bite text-pink-500 text-3xl mr-3 wiggle"></i>
+                    <h2 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
+                        Nos Délices
+                    </h2>
+                    <i class="fas fa-ice-cream text-pink-500 text-3xl ml-3 wiggle"></i>
+                </div>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Chaque pâtisserie est préparée avec des ingrédients frais et beaucoup d'amour
                 </p>
             </div>
-            
+
             <?php if(empty($produits)): ?>
-            <div class="text-center py-12">
-                <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500 text-xl">Aucun produit disponible pour le moment</p>
-                <p class="text-gray-400 mt-2">Revenez bientôt pour découvrir nos nouvelles créations !</p>
+            <div class="text-center py-16 bg-white rounded-3xl shadow-lg">
+                <i class="fas fa-cookie-bite text-8xl text-pink-300 mb-6"></i>
+                <p class="text-gray-500 text-2xl font-medium mb-2">Aucune pâtisserie disponible</p>
+                <p class="text-gray-400 text-lg">Nos chefs préparent de nouveaux délices pour vous !</p>
             </div>
             <?php else: ?>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 <?php foreach($produits as $produit): ?>
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl group border-2 border-pink-100">
                     <!-- Image -->
-                    <div class="relative h-64 overflow-hidden bg-gray-100">
+                    <div class="relative h-64 overflow-hidden">
                         <?php if($produit['image'] && file_exists('uploads/' . $produit['image'])): ?>
-                            <img src="uploads/<?php echo htmlspecialchars($produit['image']); ?>" 
+                            <img src="uploads/<?php echo htmlspecialchars($produit['image']); ?>"
                                  alt="<?php echo htmlspecialchars($produit['nom']); ?>"
                                  class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         <?php else: ?>
-                            <div class="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                                <i class="fas fa-gem text-white text-6xl opacity-50"></i>
+                            <div class="w-full h-full bg-pastry-gradient flex items-center justify-center">
+                                <i class="fas fa-birthday-cake text-white text-6xl opacity-70"></i>
                             </div>
                         <?php endif; ?>
-                        
+
                         <!-- Badge Stock -->
                         <?php if($produit['stock'] == 0): ?>
-                        <span class="absolute top-4 right-4 bg-gray-600 text-white px-3 py-1 rounded-full text-sm">
-                            <i class="fas fa-times mr-1"></i>Rupture
+                        <span class="absolute top-4 right-4 bg-gray-600 text-white px-3 py-2 rounded-full text-sm font-medium shadow-lg">
+                            <i class="fas fa-times mr-1"></i>Épuisé
                         </span>
                         <?php elseif($produit['stock'] <= 5): ?>
-                        <span class="absolute top-4 right-4 bg-danger text-white px-3 py-1 rounded-full text-sm animate-pulse">
-                            <i class="fas fa-exclamation mr-1"></i>Stock limité
+                        <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-2 rounded-full text-sm font-medium animate-pulse shadow-lg">
+                            <i class="fas fa-fire mr-1"></i>Dernières pièces
                         </span>
                         <?php else: ?>
-                        <span class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                        <span class="absolute top-4 right-4 bg-green-500 text-white px-3 py-2 rounded-full text-sm font-medium shadow-lg">
                             <i class="fas fa-check mr-1"></i>Disponible
                         </span>
                         <?php endif; ?>
-                        
-                        <!-- Overlay au hover -->
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-300"></div>
                     </div>
-                    
+
                     <!-- Content -->
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold text-dark mb-2"><?php echo htmlspecialchars($produit['nom']); ?></h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2"><?php echo htmlspecialchars($produit['nom']); ?></h3>
                         <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                            <?php echo htmlspecialchars($produit['description'] ?: 'Magnifique bijou artisanal créé avec amour et passion.'); ?>
+                            <?php echo htmlspecialchars($produit['description'] ?: 'Délicieuse pâtisserie artisanale préparée avec amour et des ingrédients frais.'); ?>
                         </p>
-                        
+
                         <div class="flex items-center justify-between mb-4">
-                            <span class="text-2xl font-bold text-danger">
+                            <span class="text-2xl font-bold text-pink-600">
                                 <?php echo number_format($produit['prix'], 0, ',', ' '); ?> CFA
                             </span>
-                            <span class="text-sm text-gray-500">
-                                <i class="fas fa-box mr-1"></i><?php echo $produit['stock']; ?> en stock
+                            <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                <i class="fas fa-layer-group mr-1"></i><?php echo $produit['stock']; ?> disponible(s)
                             </span>
                         </div>
-                        
+
                         <?php if($produit['stock'] > 0): ?>
-                        <a href="ajouter_panier.php?id=<?php echo $produit['id']; ?>" 
-                           class="block w-full bg-accent hover:bg-yellow-500 text-dark text-center py-3 rounded-lg font-semibold transition duration-300 transform hover:scale-105">
+                        <a href="ajouter_panier.php?id=<?php echo $produit['id']; ?>"
+                           class="block w-full bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white text-center py-3 rounded-xl font-bold transition duration-300 transform hover:scale-105 shadow-lg">
                             <i class="fas fa-cart-plus mr-2"></i>Ajouter au panier
                         </a>
                         <?php else: ?>
-                        <button disabled 
-                                class="block w-full bg-gray-300 text-gray-500 text-center py-3 rounded-lg font-semibold cursor-not-allowed">
-                            <i class="fas fa-times mr-2"></i>Indisponible
+                        <button disabled
+                                class="block w-full bg-gray-300 text-gray-500 text-center py-3 rounded-xl font-bold cursor-not-allowed">
+                            <i class="fas fa-times mr-2"></i>Non disponible
                         </button>
                         <?php endif; ?>
                     </div>
@@ -228,102 +326,114 @@ if(isset($_SESSION['panier'])) {
             <?php endif; ?>
         </div>
     </section>
-    
+
     <!-- Features -->
-    <section class="py-16 bg-gray-100">
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-dark mb-12">Pourquoi nous choisir ?</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent">
+                Pourquoi choisir nos pâtisseries ?
+            </h2>
+            <p class="text-center text-gray-600 mb-12 text-lg">Des délices qui font la différence</p>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center group">
-                    <div class="bg-primary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-truck text-white text-2xl"></i>
+                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300 shadow-xl">
+                        <i class="fas fa-truck text-white text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-dark mb-2">Livraison Rapide</h3>
-                    <p class="text-gray-600">Livraison gratuite dès 25.000 CFA d'achat partout à Dakar</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Livraison Express</h3>
+                    <p class="text-gray-600 text-lg">Livraison gratuite dès 15.000 CFA dans tout Dakar</p>
                 </div>
-                
+
                 <div class="text-center group">
-                    <div class="bg-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300 shadow-xl">
+                        <i class="fas fa-award text-white text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-dark mb-2">Qualité Garantie</h3>
-                    <p class="text-gray-600">Tous nos bijoux sont faits main avec des matériaux de qualité</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Qualité Premium</h3>
+                    <p class="text-gray-600 text-lg">Ingrédients frais et recettes traditionnelles</p>
                 </div>
-                
+
                 <div class="text-center group">
-                    <div class="bg-accent w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-undo text-dark text-2xl"></i>
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300 shadow-xl">
+                        <i class="fas fa-smile text-white text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-dark mb-2">Satisfaction Client</h3>
-                    <p class="text-gray-600">Échange gratuit sous 7 jours si vous n'êtes pas satisfait</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Satisfaction Garantie</h3>
+                    <p class="text-gray-600 text-lg">Remboursement si vous n'êtes pas satisfait</p>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Footer -->
-    <footer id="contact" class="bg-dark text-white py-12">
+    <footer id="contact" class="bg-gradient-to-r from-pink-600 to-orange-500 text-white py-12">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4 text-primary">Les créations de Nahed</h3>
-                    <p class="text-gray-300">Votre partenaire pour des bijoux artisanaux d'exception.</p>
-                    <p class="text-gray-400 text-sm mt-2">Créations uniques depuis 2020</p>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-birthday-cake text-3xl mr-3"></i>
+                        <h3 class="text-2xl font-bold">Délices Sucrés</h3>
+                    </div>
+                    <p class="text-white/90 text-lg">Votre pâtisserie artisanale de confiance depuis 2020</p>
+                    <p class="text-white/70 text-sm mt-2">Des moments sucrés partagés en famille</p>
                 </div>
-                
+
                 <div>
-                    <h3 class="text-xl font-bold mb-4 text-primary">Contact</h3>
-                    <p class="text-gray-300 mb-2">
-                        <i class="fas fa-phone mr-2 text-accent"></i>+221 77 628 01 31
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <p class="text-white/90 mb-3 text-lg">
+                        <i class="fas fa-phone mr-3 text-yellow-300"></i>+221 78 166 64 80
                     </p>
-                    <p class="text-gray-300 mb-2">
-                        <i class="fas fa-envelope mr-2 text-accent"></i>contact@creationsnahed.sn
+                    <p class="text-white/90 mb-3 text-lg">
+                        <i class="fas fa-envelope mr-3 text-yellow-300"></i>fmcake@gmail.com
                     </p>
-                    <p class="text-gray-300">
-                        <i class="fas fa-map-marker-alt mr-2 text-accent"></i>Dakar, Sénégal
+                    <p class="text-white/90 text-lg">
+                        <i class="fas fa-map-marker-alt mr-3 text-yellow-300"></i>Dakar, Sénégal
                     </p>
                 </div>
-                
+
                 <div>
-                    <h3 class="text-xl font-bold mb-4 text-primary">Suivez-nous</h3>
+                    <h3 class="text-xl font-bold mb-4">Suivez-nous</h3>
                     <div class="flex space-x-4">
-                        <a href="#" class="bg-secondary hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
-                            <i class="fab fa-facebook-f"></i>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-facebook-f text-xl"></i>
                         </a>
-                        <a href="#" class="bg-secondary hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
-                            <i class="fab fa-instagram"></i>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram text-xl"></i>
                         </a>
-                        <a href="#" class="bg-secondary hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
-                            <i class="fab fa-whatsapp"></i>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-whatsapp text-xl"></i>
                         </a>
-                        <a href="#" class="bg-secondary hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
-                            <i class="fab fa-tiktok"></i>
+                        <a href="#" class="bg-white/20 hover:bg-white/30 w-12 h-12 rounded-full flex items-center justify-center transition duration-300 transform hover:scale-110">
+                            <i class="fab fa-tiktok text-xl"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2024 Les créations de Nahed. Tous droits réservés.</p>
-                <p class="text-gray-500 text-sm mt-2">Fait avec <i class="fas fa-heart text-danger"></i> à Dakar</p>
+            <a href="admin/login.php" class="bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white px-6 py-2 rounded-full transition duration-300 font-medium shadow-lg">
+                        <i class="fas fa-user-shield mr-2"></i>Admin
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p class="text-white/80">&copy; 2024 Délices Sucrés. Tous droits réservés.</p>
+                <p class="text-white/60 text-sm mt-2">Fait avec <i class="fas fa-heart text-yellow-300"></i> et beaucoup de sucre à Dakar</p>
             </div>
         </div>
     </footer>
-    
+
     <!-- Bouton retour en haut -->
-    <button id="scrollToTop" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full shadow-lg hover:bg-secondary transition duration-300 transform hover:scale-110 hidden">
-        <i class="fas fa-arrow-up"></i>
+    <button id="scrollToTop" class="fixed bottom-6 right-6 bg-gradient-to-r from-pink-500 to-orange-400 text-white w-14 h-14 rounded-full shadow-xl hover:from-pink-600 hover:to-orange-500 transition duration-300 transform hover:scale-110 hidden">
+        <i class="fas fa-arrow-up text-xl"></i>
     </button>
-    
+
     <script>
         // Mobile menu toggle
         document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
-        
+
         // Scroll to top button
         const scrollToTopButton = document.getElementById('scrollToTop');
-        
+
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 scrollToTopButton.classList.remove('hidden');
@@ -331,14 +441,14 @@ if(isset($_SESSION['panier'])) {
                 scrollToTopButton.classList.add('hidden');
             }
         });
-        
+
         scrollToTopButton.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-        
+
         // Smooth scroll pour les ancres
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -352,6 +462,29 @@ if(isset($_SESSION['panier'])) {
                 }
             });
         });
+
+        // Carrousel
+        let currentSlide = 0;
+        const carousel = document.getElementById('carousel');
+        const slides = carousel.querySelectorAll('div');
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateCarousel();
+        }
+
+        // Changer de slide toutes les 5 secondes
+        setInterval(nextSlide, 5000);
     </script>
 </body>
 </html>
+<?php
